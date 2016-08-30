@@ -1,0 +1,5 @@
+for name in "$@"
+do
+	touch "$(pwd)/$name"
+	echo $'//Will Norvelle\n//wmn2bz\n//'"$(date +%D)" $'\n//'"$name" > $name
+done
