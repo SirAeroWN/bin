@@ -11,7 +11,7 @@ usd=`awk "BEGIN {print $unbalance * $zecusd}"`
 #usd=`echo '"$unbalance" * "$zecusd"' | bc -l`
 
 
-if ["$1" == "-m"]; then
+if [ "$1" == "-m" ]; then
 	printf "unpaid balance: $unbalance\nZEC to USD: \$$zecusd\nunpaid balance in USD: \$$usd" | mailx -s "zcash update" willnorvelle@gmail.com
 else
 	echo "unpaid balance: $unbalance"
