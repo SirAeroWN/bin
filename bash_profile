@@ -1,3 +1,8 @@
+source ~/git-prompt.sh
+source ~/.bashrc
+
+set -o vi
+export VISUAL="vim"
 
 ### custom stuff ###
 # search binds
@@ -8,10 +13,10 @@ bind '"\e[B":history-search-forward'
 export CLICOLOR=1
 
 ### stuff from cassidoo ###
-alias reload='source ~/.bashrc'
+alias reload='source ~/.bash_profile'
 alias a='echo "------------Your aliases------------";alias'
 alias sa='source ~/.bashrc;echo "Bash aliases sourced."'
-alias bp='nano ~/.bashrc'
+alias bp='vi ~/.bash_profile'
 
 # Git Stuff
 alias co='git checkout'
@@ -46,7 +51,6 @@ function prompt_command {
     BRANCH="\$(__git_ps1 '[ %s ] ')"
   fi
   local TIME=`fmt_time` # format time for prompt string
-  local LOAD=`uptime|awk '{min=NF-2;print $min}'`
   local GREEN="\[\033[0;32m\]"
   local CYAN="\[\033[0;36m\]"
   local BCYAN="\[\033[1;36m\]"
@@ -89,7 +93,14 @@ chkload () { #gets the current 1m avg CPU load
 
 #PS1="$status_style"'$fill \t\n'"$prompt_style"'\[\e[0;32m\]\u\[\e[m\]\[\e[0m\]\[\e[32m\]@\h \[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
 
+# send a notification
+noty() {
+    osascript -e 'display notification "your thing is done" with title "Done"'
+}
 
+spell() {
+  echo "$@" | aspell list | sort -u
+}
 # Filesystem Stuff
 alias l='ls -F'
 alias la='ls -aF'
@@ -99,14 +110,35 @@ alias ...='cd ../../'
 
 
 ### mine ###
+alias v="vim"
 alias vi="vim"
+alias vip="vim -p"
 alias svi="sudo vim"
 alias update="sudo apt update && sudo apt upgrade"
 alias root="sudo -i"
 alias su="sudo -i"
 alias howdoi="howdoi --color --all"
+alias mvnci="mvn clean install"
+alias mvnstci="mvn -DskipTests=True clean install"
+alias hdi="hdiutil"
+alias hdid="hdiutil detach"
+alias bfg="java -jar ~/bin/bfg.jar"
+alias vic="vim ~/.vim_runtime/my_configs.vim"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:$HOME/Library/Python/3.6/bin"
+export PATH="$PATH:$HOME/bin"
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+#test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
+if [[ -f "$( brew --prefix )/etc/bash_completion.d/git-completion.bash" ]]; then
+    source "$( brew --prefix )/etc/bash_completion.d/git-completion.bash"
+
+    __git_complete co _git_checkout
+    __git_complete st _git_status
+fi
+
